@@ -41,5 +41,6 @@
     </head>
     <body class="font-sans antialiased">
         @inertia
+        <h1>Hello Page</h1>
     </body>
 </html>
