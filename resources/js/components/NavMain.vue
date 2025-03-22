@@ -15,7 +15,7 @@ const menuItems = computed(() => {
     const addedMenus = new Set(); // Prevents duplicate entries
 
     const addMenuItem = (label, url, permission, dropdown) => {
-        if (!addedMenus.has(label) && (hasRole("admin") || hasPermission(permission))) {
+        if (!addedMenus.has(label) && (hasRole("admin") || hasRole("manager") || hasPermission(permission))) {
             menus.push({ label, url, dropdown });
             addedMenus.add(label);
         }
@@ -40,6 +40,18 @@ const menuItems = computed(() => {
             { label: "📄 View Managers", url: "/admin/managers" },
             { label: "✏️ Edit Managers", url: "/admin/managers/edit" },
             { label: "🗑 Delete Managers", url: "/admin/managers/delete" }
+        ],
+        floors: [
+            { label: "➕ Add Floor", url: "/admin/floors/create" },
+            { label: "📄 View Floors", url: "/admin/floors" },
+            { label: "✏️ Edit Floors", url: "/admin/floors/edit" },
+            { label: "🗑 Delete Floors", url: "/admin/floors/delete" }
+        ],
+        rooms: [
+            { label: "➕ Add Room", url: "/admin/rooms/create" },
+            { label: "📄 View Rooms", url: "/admin/rooms" },
+            { label: "✏️ Edit Rooms", url: "/admin/rooms/edit" },
+            { label: "🗑 Delete Rooms", url: "/admin/rooms/delete" }
         ]
     };
 
@@ -48,19 +60,20 @@ const menuItems = computed(() => {
         addMenuItem("👤 Manage Managers", "/admin/managers", "manage managers", dropdowns.managers);
         addMenuItem("📋 Manage Receptionists", "/admin/receptionists", "manage receptionists", dropdowns.receptionists);
         addMenuItem("👥 Manage Clients", "/admin/clients", "manage clients", dropdowns.clients);
-
-
+        addMenuItem("🏢 Manage Floors", "/admin/floors", "manage floors", dropdowns.floors);
+        addMenuItem("🚪 Manage Rooms", "/admin/rooms", "manage rooms", dropdowns.rooms);
     }
 
-    if (hasRole("manager")) {
-        addMenuItem("📋 Manage Receptionists", "/admin/receptionists", "manage receptionists", dropdowns.receptionists);
-        addMenuItem("👥 Manage Clients", "/admin/clients", "manage clients", dropdowns.clients);
+    // if (hasRole("manager")) {
+    //     addMenuItem("📋 Manage Receptionists", "/admin/receptionists", "manage receptionists", dropdowns.receptionists);
+    //     addMenuItem("👥 Manage Clients", "/admin/clients", "manage clients", dropdowns.clients);
+    //     addMenuItem("🏢 Manage Floors", "/admin/floors", "manage floors", dropdowns.floors);
+    //     addMenuItem("🚪 Manage Rooms", "/admin/rooms", "manage rooms", dropdowns.rooms);
+    // }
 
-    }
-
-    if (hasRole("receptionist")) {
-        addMenuItem("👥 Manage Clients", "/admin/clients", "manage clients", dropdowns.clients.filter(item => item.label === "📄 View Clients"));
-    }
+    // if (hasRole("receptionist")) {
+    //     addMenuItem("👥 Manage Clients", "/admin/clients", "manage clients", dropdowns.clients.filter(item => item.label === "📄 View Clients"));
+    // }
 
     return menus;
 });
