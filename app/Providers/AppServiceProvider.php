@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Providers;
-
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Log;
@@ -21,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+<<<<<<< HEAD
         Inertia::share([
             'auth' => [
                 'user' => Auth::check() ? [
@@ -33,4 +34,8 @@ class AppServiceProvider extends ServiceProvider
         Log::info('Authenticated User:', ['user' => Auth::user()]);
     }
    
+=======
+       }
+
+>>>>>>> c249f7927bcd1c14590fe12e06622c4db3fad1cf
 }
