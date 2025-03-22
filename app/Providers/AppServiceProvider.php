@@ -25,7 +25,8 @@ class AppServiceProvider extends ServiceProvider
             'auth' => [
                 'user' => Auth::check() ? [
                     'id' => Auth::id(),
-                    'permissions' => Auth::user()->getPermissionNames(),
+                    'permissions' => Auth::user()->permissions->pluck('name')->toArray(), // Fetch permissions correctly
+
                 ] : null
             ]
         ]);
