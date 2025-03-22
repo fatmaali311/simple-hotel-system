@@ -2,29 +2,45 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
 class Client extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name', 'email', 'mobile', 'country', 'gender', 'avatar_image', 'approved_by', 'approved_at'
+        'name',
+        'email',
+        'mobile',
+        'country',
+        'gender',
+        'avatar_image',
+        'approved_by',
+        'approved_at',
     ];
 
-    // Relations
-    public function approver()
+    /**
+     * The user (manager or receptionist) who approved this client.
+     */
+    public function approvedBy()
     {
         return $this->belongsTo(User::class, 'approved_by');
     }
 
+    /**
+     * Reservations made by this client.
+     */
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
     }
 
-    public function loginLog()
+    /**
+     * Login logs of this client.
+     */
+    public function loginLogs()
     {
-        return $this->hasOne(Login_log::class);
+        return $this->hasMany(Login_log::class);
     }
 }

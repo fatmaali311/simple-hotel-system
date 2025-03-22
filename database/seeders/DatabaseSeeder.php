@@ -14,18 +14,15 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
-
+        $this->call(RoleSeeder::class);
          // Create ONLY ONE Admin
-         User::updateOrCreate(
-            ['email' => 'admin@admin.com'],
-            [
-                'name' => 'Admin',
-                'password' => Hash::make('123456'),
-                'national_id' => '1234567890',
-                'role' => 'admin',
-                'avatar_image' => null,
-                'manager_id' => null,
-            ]
-        );
+         $admin = User::firstOrCreate([
+            'email' => 'admin@admin.com'
+        ], [
+            'name' => 'Admin',
+            'password' => Hash::make('123456'),
+        ]);
+
+        $admin->assignRole('admin');
     }
 }

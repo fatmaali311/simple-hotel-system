@@ -2,29 +2,32 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
 class Floor extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name', 'email', 'mobile', 'country', 'gender', 'avatar_image', 'approved_by', 'approved_at'
+        'name',
+        'number',
+        'manager_id',
     ];
 
-    // Relations
-    public function approver()
+    /**
+     * The manager who created this floor.
+     */
+    public function manager()
     {
-        return $this->belongsTo(User::class, 'approved_by');
+        return $this->belongsTo(User::class, 'manager_id');
     }
 
-    public function reservations()
+    /**
+     * Rooms under this floor.
+     */
+    public function rooms()
     {
-        return $this->hasMany(Reservation::class);
-    }
-
-    public function loginLog()
-    {
-        return $this->hasOne(Login_log::class);
+        return $this->hasMany(Room::class);
     }
 }
