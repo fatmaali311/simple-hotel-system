@@ -6,12 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\Floor;
+use App\Models\Room;
+use App\Models\Client;
+use App\Models\Reservation;
 
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
-    use HasRoles;
+    use HasFactory, Notifiable, HasRoles;
 
     protected $fillable = [
         'name',
@@ -22,6 +25,7 @@ class User extends Authenticatable
         'manager_id',
         'banned_at',
     ];
+
 
     protected $hidden = [
         'password',
