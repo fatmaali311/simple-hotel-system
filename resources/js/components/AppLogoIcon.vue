@@ -22,3 +22,4 @@ defineProps<Props>();
         />
     </svg>
 </template>
+
