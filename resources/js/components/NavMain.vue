@@ -2,72 +2,56 @@
 import { SidebarGroup, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { Link, usePage } from '@inertiajs/vue3';
 
-const page = usePage();
+// Define types for user and props
+interface User {
+    id: number;
+    permissions: string[];
+}
+
+interface PageProps {
+    auth?: {
+        user?: User;
+    };
+}
+
+// Define the full type of `usePage()`
+interface Page {
+    props: PageProps;
+    url: string;
+}
+
+// Explicitly type `usePage()`
+const page = usePage() as Page;
+
+// Extract user permissions safely
+const userPermissions = page.props.auth?.user?.permissions || [];
+
+// Define menu items with required permissions
+const menuItems = [
+    { label: '🏠 Dashboard', url: '/admin/dashboard', permission: 'view dashboard' },
+    { label: '👤 Manage Managers', url: '/admin/managers', permission: 'manage managers' },
+    { label: '📋 Manage Receptionists', url: '/admin/receptionists', permission: 'manage receptionists' },
+    { label: '👥 Manage Clients', url: '/admin/clients', permission: 'manage clients' },
+    { label: '🏢 Manage Floors', url: '/admin/floors', permission: 'manage floors' },
+    { label: '🚪 Manage Rooms', url: '/admin/rooms', permission: 'manage rooms' },
+    { label: '📊 View Statistics', url: '/admin/statistics', permission: 'view statistics' },
+];
+console.log("User object:", page.props.auth?.user);
+
+console.log("User Permissions from Laravel:", userPermissions);
+
+// Filter menu items based on user permissions
+const filteredMenuItems = menuItems.filter(item => userPermissions.includes(item.permission));
 </script>
 
 <template>
     <SidebarGroup class="px-2 py-0">
         <SidebarGroupLabel>Admin Panel</SidebarGroupLabel>
         <SidebarMenu>
-            <!-- Dashboard -->
-            <SidebarMenuItem>
-                <SidebarMenuButton as-child :is-active="page.url === '/admin/dashboard'">
-                    <Link href="/admin/dashboard">
-                        <span>🏠 Dashboard</span>
-                    </Link>
-                </SidebarMenuButton>
-            </SidebarMenuItem>
-
-            <!-- Manage Managers -->
-            <SidebarMenuItem>
-                <SidebarMenuButton as-child :is-active="page.url.startsWith('/admin/managers')">
-                    <Link href="/admin/managers">
-                        <span>👤 Manage Managers</span>
-                    </Link>
-                </SidebarMenuButton>
-            </SidebarMenuItem>
-
-            <!-- Manage Receptionists -->
-            <SidebarMenuItem>
-                <SidebarMenuButton as-child :is-active="page.url.startsWith('/admin/receptionists')">
-                    <Link href="/admin/receptionists">
-                        <span>📋 Manage Receptionists</span>
-                    </Link>
-                </SidebarMenuButton>
-            </SidebarMenuItem>
-
-            <!-- Manage Clients -->
-            <SidebarMenuItem>
-                <SidebarMenuButton as-child :is-active="page.url.startsWith('/admin/clients')">
-                    <Link href="/admin/clients">
-                        <span>👥 Manage Clients</span>
-                    </Link>
-                </SidebarMenuButton>
-            </SidebarMenuItem>
-
-            <!-- Manage Floors -->
-            <SidebarMenuItem>
-                <SidebarMenuButton as-child :is-active="page.url.startsWith('/admin/floors')">
-                    <Link href="/admin/floors">
-                        <span>🏢 Manage Floors</span>
-                    </Link>
-                </SidebarMenuButton>
-            </SidebarMenuItem>
-
-            <!-- Manage Rooms -->
-            <SidebarMenuItem>
-                <SidebarMenuButton as-child :is-active="page.url.startsWith('/admin/rooms')">
-                    <Link href="/admin/rooms">
-                        <span>🚪 Manage Rooms</span>
-                    </Link>
-                </SidebarMenuButton>
-            </SidebarMenuItem>
-
-            <!-- Statistics -->
-            <SidebarMenuItem>
-                <SidebarMenuButton as-child :is-active="page.url.startsWith('/admin/statistics')">
-                    <Link href="/admin/statistics">
-                        <span>📊 View Statistics</span>
+            <SidebarMenuItem v-for="item in filteredMenuItems" :key="item.url">
+                <SidebarMenuButton as-child :is-active="page.url.startsWith(item.url)">
+                    <Link :href="item.url">
+                        <span>{{ item.label }}</span>
                     </Link>
                 </SidebarMenuButton>
             </SidebarMenuItem>

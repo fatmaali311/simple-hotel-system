@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 class RoleSeeder extends Seeder
 {
     /**
@@ -12,8 +13,16 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        Role::firstOrCreate(['name' => 'admin']);
-        Role::firstOrCreate(['name' => 'manager']);
-        Role::firstOrCreate(['name' => 'receptionist']);
+       $admin= Role::firstOrCreate(['name' => 'admin']);
+       $manager= Role::firstOrCreate(['name' => 'manager']);
+       $receptionist= Role::firstOrCreate(['name' => 'receptionist']);
+
+        $manageClients = Permission::create(['name' => 'manage clients']);
+        $manageRooms = Permission::create(['name' => 'manage rooms']);
+
+        // Assign permissions to roles
+        $admin->givePermissionTo($manageClients);
+        $admin->givePermissionTo($manageRooms);
+        $manager->givePermissionTo($manageClients);
     }
 }
