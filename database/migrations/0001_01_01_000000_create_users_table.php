@@ -17,6 +17,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('national_id')->unique()->nullable();
+            $table->string('avatar_image')->nullable();
+            $table->enum('role', ['admin', 'manager', 'receptionist']);
+            $table->timestamp('banned_at')->nullable();
+            $table->foreignId('manager_id')->nullable()->constrained('users')->nullOnDelete(); // who created receptionist
             $table->rememberToken();
             $table->timestamps();
         });

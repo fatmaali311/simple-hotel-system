@@ -45,4 +45,31 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+    public function receptionists()
+    {
+        return $this->hasMany(User::class, 'manager_id')->where('role', 'receptionist');
+    }
+
+    public function floors()
+    {
+        return $this->hasMany(Floor::class, 'manager_id');
+    }
+
+    public function rooms()
+    {
+        return $this->hasMany(Room::class, 'manager_id');
+    }
+
+    public function approvedClients()
+    {
+        return $this->hasMany(Client::class, 'approved_by');
+    }
+
+    public function reservationsCreated()
+    {
+        return $this->hasMany(Reservation::class, 'created_by');
+    }
 }
+
