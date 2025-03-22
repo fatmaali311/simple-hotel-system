@@ -45,14 +45,17 @@ const menuItems = computed(() => {
 
     // Assign menu items based on roles
     if (hasRole("admin")) {
-        addMenuItem("👥 Manage Clients", "/admin/clients", "manage clients", dropdowns.clients);
-        addMenuItem("📋 Manage Receptionists", "/admin/receptionists", "manage receptionists", dropdowns.receptionists);
         addMenuItem("👤 Manage Managers", "/admin/managers", "manage managers", dropdowns.managers);
+        addMenuItem("📋 Manage Receptionists", "/admin/receptionists", "manage receptionists", dropdowns.receptionists);
+        addMenuItem("👥 Manage Clients", "/admin/clients", "manage clients", dropdowns.clients);
+
+
     }
 
     if (hasRole("manager")) {
-        addMenuItem("👥 Manage Clients", "/admin/clients", "manage clients", dropdowns.clients);
         addMenuItem("📋 Manage Receptionists", "/admin/receptionists", "manage receptionists", dropdowns.receptionists);
+        addMenuItem("👥 Manage Clients", "/admin/clients", "manage clients", dropdowns.clients);
+
     }
 
     if (hasRole("receptionist")) {
