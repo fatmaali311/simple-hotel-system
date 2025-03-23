@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\Receptionist\ClientController;
@@ -12,6 +13,9 @@ Route::get('/', function () {
 Route::get('/admin/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/admin', [AdminController::class, 'index'])
+    ->middleware(['auth', 'role:admin']);
 
 Route::get('clients', function () {
     return Inertia::render('Clients');

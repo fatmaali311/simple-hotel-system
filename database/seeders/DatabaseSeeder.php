@@ -1,13 +1,13 @@
 <?php
 
 namespace Database\Seeders;
+
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -15,11 +15,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // Create roles
         $adminRole = Role::create(['name' => 'admin']);
         $managerRole = Role::create(['name' => 'manager']);
         $receptionistRole = Role::create(['name' => 'receptionist']);
-
-<<<<<<< HEAD
         $permissions = [
             'view dashboard',
             'manage managers',
@@ -34,15 +33,20 @@ class DatabaseSeeder extends Seeder
             Permission::create(['name' => $permission]);
         }
 
-        // Assign all permissions to admin
+        // Assign all permissions to admin role
         $adminRole->givePermissionTo($permissions);
 
         // Assign specific permissions to roles
-        $managerRole->givePermissionTo(['manage receptionists', 'manage clients', 'manage floors', 'manage rooms']);
+        $managerRole->givePermissionTo([
+            'manage receptionists',
+            'manage clients',
+            'manage floors',
+            'manage rooms'
+        ]);
         $receptionistRole->givePermissionTo(['manage clients']);
-=======
-         // Create ONLY ONE Admin
-         User::updateOrCreate(
+
+        // Create an Admin user
+        $admin = User::updateOrCreate(
             ['email' => 'admin@admin.com'],
             [
                 'name' => 'Admin',
@@ -53,12 +57,15 @@ class DatabaseSeeder extends Seeder
                 'manager_id' => null,
             ]
         );
-        User::create([
+        $admin->assignRole($adminRole); // Assign admin role to the user
+
+        // Create a Receptionist user
+        $receptionist = User::create([
             'name' => 'Receptionist 1',
             'email' => 'receptionist1@hotel.com',
             'password' => Hash::make('1234'),
             'role' => 'receptionist',
         ]);
->>>>>>> 7f789f5 (Role problem/receptionist)
+        $receptionist->assignRole($receptionistRole); // Assign receptionist role to the user
     }
 }
